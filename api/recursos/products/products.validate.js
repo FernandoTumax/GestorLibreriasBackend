@@ -18,6 +18,7 @@ const blueprintUpdate = Joi.object({
   img: Joi.string().allow("").optional(),
   _id: Joi.optional().allow(""),
   __v: Joi.allow("").optional(),
+  cantidad: Joi.allow("").optional()
 })
 
 const CONTENT_TYPES_PERMIT = ["image/jpeg", "image/jpg", "image/png"];

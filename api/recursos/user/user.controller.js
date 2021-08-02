@@ -35,6 +35,14 @@ function setshoppingCar(id, shoppingCar) {
   );
 }
 
+function deleteOneShoppingCar(id, product) {
+  return Usuario.findOneAndUpdate(
+    { _id: id },
+    { $pull: { shoppingCar: { _id: product } } },
+    { new: true }
+  );
+}
+
 function deleteSchoolStore(id, schoolStore) {
   return Usuario.findOneAndUpdate(
     { _id: id },
@@ -99,5 +107,6 @@ module.exports = {
   existingUser,
   foundOneUser,
   saveImg,
-  setshoppingCar
+  setshoppingCar,
+  deleteOneShoppingCar
 };

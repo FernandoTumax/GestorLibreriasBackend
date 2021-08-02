@@ -31,9 +31,7 @@ const userRouter = express.Router();
 
 function transformarBodyALowerCase(req, res, next) {
   req.body.username && (req.body.username = req.body.username.toLowerCase());
-  req.body.name && (req.body.name = req.body.name.toLowerCase());
   req.body.email && (req.body.email = req.body.email.toLowerCase());
-  req.body.lastname && (req.body.lastname = req.body.lastname.toLowerCase());
   next();
 }
 
@@ -156,7 +154,7 @@ userRouter.put(
     let params = req.body;
     let product = {
       ...params,
-      cantidad: 1
+      cantidad: 1,
     };
 
     userController.setshoppingCar(id, product).then((usuarioActualizado) => {
@@ -164,6 +162,19 @@ userRouter.put(
         message: "Usuario Actualizado",
         usuario: usuarioActualizado,
       });
+    });
+  })
+);
+
+userRouter.put(
+  "/shoppingCarOneProduct/:idP/:idU",
+  procesarErrores(async (req, res) => {
+    let id = req.params.idU;
+    let idProduct = req.params.idP;
+    console.log(id);
+    userController.deleteOneShoppingCar(id, idProduct).then((userUpdated) => {
+      log.info("Se elimino el producto dentro del carrito");
+      res.send({ message: "Usuario actualizado", user: userUpdated });
     });
   })
 );
@@ -245,13 +256,14 @@ userRouter.put(
     const id = req.params.id;
     const user = req.user.username;
     const file = req.body;
-
+    
     let fileBuffer = Buffer.from(file);
+
+
 
     log.debug(
       `Request recibido de usuario [${user}] para guardar imagen del usuario`
     );
-
     /*let form = new multuparty.Form();
     form.parse(req, function(err, fields, files){
       let fileUpload = files.file;

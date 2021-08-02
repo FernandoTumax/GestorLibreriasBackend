@@ -158,13 +158,17 @@ productRouter.put(
   [jwtAuthenticate, validateImage],
   procesarErrores(async (req, res) => {
     const id = req.params.id;
+    const file = req.body;
+
+    let fileBuffer = Buffer.from(file);
+
     log.debug(
       `Request recibido del producto con id [${id}] para guardar imagen del producto`
     );
 
     const nameRandom = `${uuidv4()}.${req.extensionDeArchivo}`;
 
-    await saveImageProduct(req.body, nameRandom);
+    await saveImageProduct(fileBuffer, nameRandom);
 
     const urlImage = `https://data-image-gestor-librerias.s3.us-east-2.amazonaws.com/images-productos/${nameRandom}`;
 

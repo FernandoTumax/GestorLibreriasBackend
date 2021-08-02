@@ -19,14 +19,12 @@ exports.procesarErroresDeDB = (err, req, res, next) => {
 };
 
 exports.erroresEnProduccion = (err, req, res, next) => {
-  log.debug(req.body);
   res.status(err.status || 500);
   log.error(err.message)
   res.send({ message: err.message });
 };
 
 exports.erroresEnDesarrollo = (err, req, res, next) => {
-  log.debug(req.body);
   res.status(err.status || 500);
   log.error(err.message)
   res.send({ message: err.message });

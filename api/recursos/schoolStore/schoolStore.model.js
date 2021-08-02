@@ -25,7 +25,7 @@ const schoolStoreSchema = new mongoose.Schema({
     type: String,
   },
   products: [{ type: mongoose.Schema.ObjectId, ref: "product" }],
-  orders: [{ type: mongoose.Schema.ObjectId, ref: "order" }],
+  orders: [{ type: mongoose.Schema.ObjectId, ref: "orders" }],
 });
 
 module.exports = mongoose.model("schoolStore", schoolStoreSchema);

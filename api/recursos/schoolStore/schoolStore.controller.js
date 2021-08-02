@@ -1,7 +1,7 @@
 const SchoolStore = require("./schoolStore.model");
 
 function foundSchoolStore() {
-  return SchoolStore.find({}).populate('products');
+  return SchoolStore.find({}).populate("products");
 }
 
 function createSchoolStore(schoolStore) {
@@ -38,9 +38,23 @@ function deleteProduct(id, product) {
   );
 }
 
+function setOrders(id, order) {
+  return SchoolStore.findOneAndUpdate(
+    { _id: id },
+    { $push: { orders: order } },
+    { new: true }
+  );
+}
+
+function deleteOrders(id, order){
+  return SchoolStore.findOneAndUpdate({_id: id}, {$pull: {orders: order}}, {new:true})
+}
+
+
 function existingSchoolStore(name) {
   return new Promise((resolve, reject) => {
-    SchoolStore.find().populate('products')
+    SchoolStore.find()
+      .populate("products")
       .or([{ name: name }])
       .then((librerias) => {
         resolve(librerias.length > 0);
@@ -53,10 +67,10 @@ function existingSchoolStore(name) {
 
 function foundOneSchoolStore({ name: name, id: id }) {
   if (name) {
-    return SchoolStore.findOne({ name: name }).populate('products');
+    return SchoolStore.findOne({ name: name }).populate("products");
   }
   if (id) {
-    return SchoolStore.findById(id).populate('products');
+    return SchoolStore.findById(id).populate("products");
   }
   throw new Error(
     "Funcion obtener librerias del controlador fue llamado sin especificar el nombre o el id"
@@ -80,5 +94,7 @@ module.exports = {
   deleteProduct,
   existingSchoolStore,
   foundOneSchoolStore,
-  saveImg
+  saveImg,
+  setOrders,
+  deleteOrders
 };

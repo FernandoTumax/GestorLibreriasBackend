@@ -8,7 +8,7 @@ const userController = require("../user/user.controller");
 const validateImage = require("./schoolStore.validate").validateImage;
 const validateSchoolStore =
   require("./schoolStore.validate").validateSchoolStore;
-const validateUpdate = require('./schoolStore.validate').validateUpdate;
+const validateUpdate = require("./schoolStore.validate").validateUpdate;
 const procesarErrores = require("../../libs/errorHandler").procesarErrores;
 const { saveImageSchoolStore } = require("../../data/images.controller");
 const {
@@ -164,13 +164,18 @@ schoolStoreRouter.put(
   [jwtAuthenticate, validateImage],
   procesarErrores(async (req, res) => {
     const id = req.params.id;
+
+    const file = req.body;
+
+    let fileBuffer = Buffer.from(file);
+
     log.debug(
       `Request recibido de la libreria [${id}] para guardar imagen de la libreria`
     );
 
     const nameRandom = `${uuidv4()}.${req.extensionDeArchivo}`;
 
-    await saveImageSchoolStore(req.body, nameRandom);
+    await saveImageSchoolStore(fileBuffer, nameRandom);
 
     const urlImage = `https://data-image-gestor-librerias.s3.us-east-2.amazonaws.com/images-librerias/${nameRandom}`;
 
